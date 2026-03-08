@@ -1,0 +1,79 @@
+create table CUSTOMERS1(
+cust_id number primary key,
+cust_name varchar2(30),
+city varchar2(30)
+);
+create table PRODUCTS(
+prod_id number primary key ,
+prod_name varchar2(30),
+price number 
+);
+create table ORDERS(
+order_id number primary key,
+cust_id number ,
+prod_id number,
+quantity number,
+FOREIGN KEY (prod_id) REFERENCES PRODUCTS (prod_id),
+FOREIGN KEY (cust_id) REFERENCES CUSTOMERS1 (cust_id)
+);
+---------------------------------------------------------------
+insert into CUSTOMERS1
+values (1,'Ali','Amman');
+insert into CUSTOMERS1
+values (2,'Sara','Irbid');
+insert into CUSTOMERS1
+values (3,'Omar','Zarqa');
+-----------------------------------------------
+insert into PRODUCTS 
+values (101,'Laptop',1000);
+insert into PRODUCTS 
+values (102,'Mouse',50);
+insert into PRODUCTS 
+values (103,'Keyboard',80);
+-----------------------------------------------
+insert into ORDERS 
+values (1,1,101,2);
+insert into ORDERS 
+values (2,2,102,5);
+insert into ORDERS 
+values (3,1,103,1);
+insert into ORDERS 
+values (4,3,101,1);
+insert into ORDERS 
+values (5,2,103,2);
+-------------------------------------------
+select * from CUSTOMERS1
+-----------------------------------------
+select prod_name, price
+from PRODUCTS
+-----------------------------------------------------------------------
+select order_id
+from ORDERS 
+where cust_id>1
+----------------------------------------------------------------------
+select cust_name , prod_name
+from CUSTOMERS1 c
+join ORDERS o 
+on c.cust_id=o.cust_id
+join PRODUCTS p
+on o.prod_id=p.prod_id
+----------------------------------------
+select sum(quantity),cust_name
+from ORDERS o
+join CUSTOMERS1 c
+on o.cust_id=c.cust_id
+group by (cust_name)
+----------------------------------------------------------------------
+select max(price)
+from PRODUCTS
+---------------------------
+select avg(quantity),prod_id
+from  ORDERS
+group by prod_id
+-----------------------------
+select prod_name,sum(quantity)
+from PRODUCTS p 
+join ORDERS o
+on p.prod_id=o.prod_id
+group by prod_name
+order by sum(quantity) desc
